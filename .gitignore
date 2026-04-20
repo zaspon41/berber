@@ -1,5 +1,5 @@
-<Project>
-  <ItemGroup>
-    <SonarQubeExclude Include="**" />
-  </ItemGroup>
-</Project>
+﻿bin/
+obj/
+.vs/
+*.dll
+*.exe
