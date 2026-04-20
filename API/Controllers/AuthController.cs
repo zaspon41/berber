@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -85,6 +86,7 @@ public class AuthController : BaseController
         }
     }
 
+    [Authorize]
     [HttpGet("admin-status")]
     public ActionResult<ApiResponse<object>> GetAdminStatus()
     {
@@ -95,13 +97,7 @@ public class AuthController : BaseController
             var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var adminUserName = User.Identity?.Name;
 
-            if (User.Identity?.IsAuthenticated != true || string.IsNullOrEmpty(adminId))
-            {
-                _logger.LogWarning("Admin status: oturum bulunamadı");
-                return Unauthorized(ApiResponse<object>.ErrorResponse("Admin oturumu açık değil"));
-            }
-
-            _logger.LogInformation("Admin status: aktif oturum bulundu. AdminId={AdminId}, AdminUserName={AdminUserName}", adminId, adminUserName);
+            _logger.LogInformation("Admin status: JWT token doğrulandı. AdminId={AdminId}, AdminUserName={AdminUserName}", adminId, adminUserName);
             return Ok(ApiResponse<object>.SuccessResponse(new { AdminId = adminId, AdminUserName = adminUserName }, "Admin oturumu açık"));
         }
         catch (Exception ex)
