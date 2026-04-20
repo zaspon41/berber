@@ -1,0 +1,11 @@
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\bin\Debug\net8.0\Domain.deps.json
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\bin\Debug\net8.0\Domain.dll
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\bin\Debug\net8.0\Domain.pdb
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.dll
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\refint\Domain.dll
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.pdb
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\ref\Domain.dll

@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "TSxfdiLd30E=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\berka\\OneDrive\\Desktop\\Dreamweaver\\berber_BE\\Application\\Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\berka\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\berka\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
+    "C:\\Users\\berka\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\berka\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
+    "C:\\Users\\berka\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\berka\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "'AutoMapper' 13.0.1 paketinde önem derecesi yüksek olan bilinen bir https://github.com/advisories/GHSA-rvv3-g6hj-g44x güvenlik açığı var",
+      "projectPath": "C:\\Users\\berka\\OneDrive\\Desktop\\Dreamweaver\\berber_BE\\Application\\Application.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\berka\\OneDrive\\Desktop\\Dreamweaver\\berber_BE\\Application\\Application.csproj",
+      "libraryId": "AutoMapper",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
