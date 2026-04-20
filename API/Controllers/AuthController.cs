@@ -44,6 +44,7 @@ public class AuthController : BaseController
             result.Token = token;
 
             _logger.LogInformation($"Admin {result.AdminUserName} başarıyla giriş yaptı. Token üretildi.");
+            _logger.LogInformation($"Generated JWT Token: {token}");
 
             return Ok(ApiResponse<AdminLoginResponse>.SuccessResponse(result, "Admin başarıyla giriş yaptı"));
         }
