@@ -9,3 +9,4 @@ C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Do
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\refint\Domain.dll
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.pdb
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\ref\Domain.dll
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Domain\obj\Debug\net8.0\Domain.sourcelink.json

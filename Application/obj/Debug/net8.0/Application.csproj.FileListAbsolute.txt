@@ -13,3 +13,4 @@ C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Application\obj\Debug\net8
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Application\obj\Debug\net8.0\refint\Application.dll
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Application\obj\Debug\net8.0\Application.pdb
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Application\obj\Debug\net8.0\ref\Application.dll
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Application\obj\Debug\net8.0\Application.sourcelink.json

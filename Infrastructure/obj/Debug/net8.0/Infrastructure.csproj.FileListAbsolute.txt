@@ -17,3 +17,4 @@ C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Infrastructure\obj\Debug\n
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Infrastructure\obj\Debug\net8.0\ref\Infrastructure.dll
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Infrastructure\bin\Debug\net8.0\Infrastructure.runtimeconfig.json
 C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Infrastructure\obj\Debug\net8.0\Infrastructure.genruntimeconfig.cache
+C:\Users\berka\OneDrive\Desktop\Dreamweaver\berber_BE\Infrastructure\obj\Debug\net8.0\Infrastructure.sourcelink.json

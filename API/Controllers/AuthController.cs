@@ -1,13 +1,16 @@
 namespace API.Controllers;
 
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Application.DTOs;
 using Application.Interfaces;
 using Application.Common;
@@ -19,11 +22,13 @@ public class AuthController : BaseController
 {
     private readonly IAdminService _adminService;
     private readonly ILogger<AuthController> _logger;
+    private readonly IConfiguration _configuration;
 
-    public AuthController(IAdminService adminService, ILogger<AuthController> logger)
+    public AuthController(IAdminService adminService, ILogger<AuthController> logger, IConfiguration configuration)
     {
         _adminService = adminService;
         _logger = logger;
+        _configuration = configuration;
     }
 
     [HttpPost("admin-login")]
@@ -33,38 +38,11 @@ public class AuthController : BaseController
         {
             var result = await _adminService.LoginAsync(request);
 
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
-                new Claim(ClaimTypes.Name, result.AdminUserName)
-            };
+            // Generate JWT token
+            var token = GenerateJwtToken(result.Id, result.AdminUserName);
+            result.Token = token;
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
-                AllowRefresh = true
-            };
-
-            try
-            {
-                _logger.LogInformation("SignInAsync başlatılıyor... Schema: {Schema}", CookieAuthenticationDefaults.AuthenticationScheme);
-                
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-
-                _logger.LogInformation("SignInAsync başarılı oldu! Cookie yazıldı.");
-            }
-            catch (Exception signInEx)
-            {
-                _logger.LogError($"SignInAsync hatası: {signInEx.Message}. Stack: {signInEx.StackTrace}");
-                throw;
-            }
-
-            _logger.LogInformation($"Admin {result.AdminUserName} başarıyla giriş yaptı");
+            _logger.LogInformation($"Admin {result.AdminUserName} başarıyla giriş yaptı. Token üretildi.");
 
             return Ok(ApiResponse<AdminLoginResponse>.SuccessResponse(result, "Admin başarıyla giriş yaptı"));
         }
@@ -92,14 +70,11 @@ public class AuthController : BaseController
     }
 
     [HttpPost("admin-logout")]
-    public async Task<ActionResult<ApiResponse>> AdminLogout()
+    public ActionResult<ApiResponse> AdminLogout()
     {
         try
         {
-            var adminUserName = User.Identity?.Name;
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            _logger.LogInformation($"Admin {adminUserName} çıkış yaptı");
+            _logger.LogInformation("Admin çıkış isteği alındı (JWT stateless - server tarafında işlem yok)");
             return Ok(ApiResponse.SuccessResponse("Admin başarıyla çıkış yaptı"));
         }
         catch (Exception ex)
@@ -135,5 +110,39 @@ public class AuthController : BaseController
             return StatusCode(StatusCodes.Status500InternalServerError, 
                 ApiResponse<object>.ErrorResponse("Beklenmeyen bir hata oluştu"));
         }
+    }
+
+    private string GenerateJwtToken(int adminId, string adminUserName)
+    {
+        var jwtSettings = _configuration.GetSection("Jwt");
+        var secretKey = jwtSettings["SecretKey"];
+        var issuer = jwtSettings["Issuer"];
+        var audience = jwtSettings["Audience"];
+        var expirationMinutes = int.Parse(jwtSettings["ExpirationMinutes"] ?? "1440");
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, adminId.ToString()),
+            new Claim(ClaimTypes.Name, adminUserName),
+            new Claim("AdminId", adminId.ToString())
+        };
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(expirationMinutes),
+            signingCredentials: credentials
+        );
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.WriteToken(token);
+
+        _logger.LogInformation($"JWT Token oluşturuldu. AdminId={adminId}, ExpiresIn={expirationMinutes} dakika");
+
+        return jwtToken;
     }
 }
