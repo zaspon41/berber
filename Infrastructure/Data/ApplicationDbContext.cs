@@ -14,4 +14,5 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Admin> Admins { get; set; }
+    public DbSet<Hizmet> Hizmetler { get; set; }
 }

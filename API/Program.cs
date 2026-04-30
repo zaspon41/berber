@@ -84,6 +84,12 @@ builder.Services.AddScoped<IAdminAuthRepository, AdminAuthRepository>();
 builder.Services.AddScoped<IAdminService, AdminAuthService>();
 builder.Services.AddScoped<IValidator<AdminLoginRequest>, AdminLoginValidator>();
 
+// Add Service dependencies
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IValidator<CreateServiceRequest>, CreateServiceValidator>();
+builder.Services.AddScoped<IValidator<UpdateServiceRequest>, UpdateServiceValidator>();
+
 // Add AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
