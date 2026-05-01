@@ -12,5 +12,20 @@ public class MappingProfile : Profile
         CreateMap<CreateServiceRequest, Hizmet>();
         CreateMap<UpdateServiceRequest, Hizmet>();
         CreateMap<Hizmet, ServiceResponse>();
+
+        // OperatingHours mappings
+        CreateMap<CreateOperatingHoursRequest, OperatingHours>();
+        CreateMap<UpdateOperatingHoursRequest, OperatingHours>();
+        CreateMap<OperatingHours, OperatingHoursResponse>();
+
+        // BlockedDates mappings
+        CreateMap<CreateBlockedDatesRequest, BlockedDates>();
+        CreateMap<UpdateBlockedDatesRequest, BlockedDates>();
+        CreateMap<BlockedDates, BlockedDatesResponse>();
+
+        // Appointment mappings
+        CreateMap<CreateAppointmentRequest, Appointment>();
+        CreateMap<UpdateAppointmentRequest, Appointment>();
+        CreateMap<Appointment, AppointmentResponse>();
     }
 }

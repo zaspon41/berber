@@ -90,6 +90,20 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IValidator<CreateServiceRequest>, CreateServiceValidator>();
 builder.Services.AddScoped<IValidator<UpdateServiceRequest>, UpdateServiceValidator>();
 
+// Add Schedule dependencies (OperatingHours, BlockedDates, Appointment)
+builder.Services.AddScoped<IOperatingHoursRepository, OperatingHoursRepository>();
+builder.Services.AddScoped<IBlockedDatesRepository, BlockedDatesRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+builder.Services.AddScoped<IOperatingHoursService, OperatingHoursService>();
+builder.Services.AddScoped<IBlockedDatesService, BlockedDatesService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IValidator<CreateOperatingHoursRequest>, CreateOperatingHoursValidator>();
+builder.Services.AddScoped<IValidator<UpdateOperatingHoursRequest>, UpdateOperatingHoursValidator>();
+builder.Services.AddScoped<IValidator<CreateBlockedDatesRequest>, CreateBlockedDatesValidator>();
+builder.Services.AddScoped<IValidator<UpdateBlockedDatesRequest>, UpdateBlockedDatesValidator>();
+builder.Services.AddScoped<IValidator<CreateAppointmentRequest>, CreateAppointmentValidator>();
+builder.Services.AddScoped<IValidator<UpdateAppointmentRequest>, UpdateAppointmentValidator>();
+
 // Add AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
