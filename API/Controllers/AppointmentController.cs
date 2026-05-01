@@ -307,4 +307,85 @@ public class AppointmentController : ControllerBase
             });
         }
     }
+
+    /// <summary>
+    /// Müşteri randevuyu iptal et (Public)
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPut("cancel/{id}")]
+    public async Task<IActionResult> CancelAppointment(int id)
+    {
+        try
+        {
+            _logger.LogInformation("Randevu iptal isteneği: ID {id}", id);
+            
+            // Randevuyu getir
+            var appointment = await _appointmentService.GetByIdAsync(id);
+            
+            // Durumu kontrol et
+            if (appointment.Durum == "İptal")
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Bu randevu zaten iptal edilmiş"
+                });
+
+            // Geçmiş randevu iptal edilemesin
+            if (DateTime.Now > appointment.RandevuTarihi)
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Geçmiş randevular iptal edilemez"
+                });
+
+            // Status'u iptal et
+            var updateRequest = new UpdateAppointmentRequest
+            {
+                Id = id,
+                MüşteriAdı = appointment.MüşteriAdı,
+                MüşteriTelefon = appointment.MüşteriTelefon,
+                HizmetId = appointment.HizmetId,
+                RandevuTarihi = appointment.RandevuTarihi,
+                RandevuSaati = appointment.RandevuSaati,
+                Durum = "İptal",
+                Notlar = appointment.Notlar
+            };
+
+            var result = await _appointmentService.UpdateAsync(updateRequest);
+            
+            return Ok(new ApiResponse<AppointmentResponse>
+            {
+                Success = true,
+                Message = "Randevunuz başarıyla iptal edildi",
+                Data = result
+            });
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogWarning("Randevu bulunamadı: {error}", ex.Message);
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = ex.Message
+            });
+        }
+        catch (BadRequestException ex)
+        {
+            _logger.LogWarning("Hatalı istek: {error}", ex.Message);
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = ex.Message
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Randevu iptal hatası: {error}", ex.Message);
+            return StatusCode(500, new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Randevu iptal edilirken hata oluştu"
+            });
+        }
+    }
 }
