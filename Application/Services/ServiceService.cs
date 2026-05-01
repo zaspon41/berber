@@ -1,4 +1,4 @@
-namespace Infrastructure.Services;
+namespace Application.Services;
 
 using System.Collections.Generic;
 using System.Linq;

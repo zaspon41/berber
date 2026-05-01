@@ -7,6 +7,7 @@ using Infrastructure.Services;
 using Application.Interfaces;
 using Application.Validators;
 using Application.DTOs;
+using Application.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
