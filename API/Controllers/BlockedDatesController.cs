@@ -250,4 +250,45 @@ public class BlockedDatesController : ControllerBase
             });
         }
     }
+
+    /// <summary>
+    /// Belirtilen ay içindeki kapalı günleri göster (Public)
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("month/{year}/{month}")]
+    public async Task<IActionResult> GetBlockedDatesInMonth(int year, int month)
+    {
+        try
+        {
+            if (month < 1 || month > 12)
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Ay 1-12 arasında olmalıdır"
+                });
+
+            _logger.LogInformation("Kapalı günler sorgulanıyor: {year}-{month}", year, month);
+            
+            var firstDay = new DateOnly(year, month, 1);
+            var lastDay = firstDay.AddMonths(1).AddDays(-1);
+
+            var blockedDates = await _blockedDatesService.GetByDateRangeAsync(firstDay, lastDay);
+
+            return Ok(new ApiResponse<List<BlockedDatesResponse>>
+            {
+                Success = true,
+                Message = $"{year}-{month:D2} ayının kapalı günleri",
+                Data = blockedDates
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Kapalı günler sorgu hatası: {error}", ex.Message);
+            return StatusCode(500, new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Kapalı günler getirilirken hata oluştu"
+            });
+        }
+    }
 }

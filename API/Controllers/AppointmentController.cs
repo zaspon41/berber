@@ -259,4 +259,52 @@ public class AppointmentController : ControllerBase
             });
         }
     }
+
+    /// <summary>
+    /// Müşteri randevu oluştur (Public - kimlik kontrolü yok)
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPost("book")]
+    public async Task<IActionResult> BookAppointment([FromBody] CreateAppointmentRequest request)
+    {
+        try
+        {
+            _logger.LogInformation("Müşteri randevu talebinde: {customerName} - {date}", request.MüşteriAdı, request.RandevuTarihi);
+            var result = await _appointmentService.CreateAsync(request);
+            return Ok(new ApiResponse<AppointmentResponse>
+            {
+                Success = true,
+                Message = "Randevunuz başarıyla oluşturuldu. Bize ulaşın.",
+                Data = result
+            });
+        }
+        catch (ValidationException ex)
+        {
+            _logger.LogWarning("Validasyon hatası: {error}", string.Join(", ", ex.Errors));
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Lütfen bilgilerinizi kontrol ediniz",
+                Errors = ex.Errors
+            });
+        }
+        catch (BadRequestException ex)
+        {
+            _logger.LogWarning("Uygun olmayan istek: {error}", ex.Message);
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = ex.Message
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Randevu booking hatası: {error}", ex.Message);
+            return StatusCode(500, new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Randevu oluşturulurken hata oluştu, lütfen tekrar deneyin"
+            });
+        }
+    }
 }

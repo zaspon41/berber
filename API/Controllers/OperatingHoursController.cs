@@ -250,4 +250,51 @@ public class OperatingHoursController : ControllerBase
             });
         }
     }
+
+    /// <summary>
+    /// Verilen tarihte müsait saatleri göster (Public)
+    /// </summary>
+    [AllowAnonymous]
+    [HttpGet("available/{date}")]
+    public async Task<IActionResult> GetAvailableHours(string date)
+    {
+        try
+        {
+            if (!DateTime.TryParse(date, out var selectedDate))
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Geçersiz tarih formatı (yyyy-MM-dd)"
+                });
+
+            var dayOfWeek = (int)selectedDate.DayOfWeek;
+            _logger.LogInformation("Müsait saatler sorgulanıyor: {date}, Gün: {day}", selectedDate.Date, dayOfWeek);
+            
+            var hours = await _operatingHoursService.GetByDayAsync(dayOfWeek);
+            
+            if (hours == null)
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Bu gün kapalı",
+                    Data = null
+                });
+
+            return Ok(new ApiResponse<OperatingHoursResponse>
+            {
+                Success = true,
+                Message = "Müsait saatler",
+                Data = hours
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Müsait saatler sorgu hatası: {error}", ex.Message);
+            return StatusCode(500, new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Saatler getirilirken hata oluştu"
+            });
+        }
+    }
 }
